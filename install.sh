@@ -150,7 +150,10 @@ say_err "Destination: $dest"
 say_err "Archive:     $archive"
 
 td=$(mktemp -d || mktemp -d -t tmp)
-curl --proto =https --tlsv1.2 -sSfL $archive | tar -C $td -xz
+echo "archive="$archive
+curl -sSfL $archive
+#curl --proto =https --tlsv1.2 -sSfL $archive
+#curl --proto =https --tlsv1.2 -sSfL $archive | tar -C $td -xz
 
 for f in $(ls $td); do
   test -x $td/$f || continue
