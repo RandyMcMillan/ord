@@ -118,7 +118,29 @@ if [ -z ${target-} ]; then
   esac
 fi
 
-archive="$releases/download/$tag/$crate-$tag-$target.tar.gz"
+
+
+echo "releases"=$releases
+echo "tag"=$tag
+echo "crate"=$crate
+echo "target="$target
+
+#REF: using curl and jq
+#REF: curl  https://api.github.com/repos/casey/ord/releases/latest | jq .
+#REF: curl  https://api.github.com/repos/casey/ord/releases/latest | jq . | grep "tag_name"
+tag_name=$(curl https://api.github.com/repos/casey/ord/releases/latest | jq . | grep 'tag_name') #| sed 's/"tag_name": "//' | sed 's/",//' | sed 's/   //')
+tag_name=$(sed 's/"tag_name": "//')
+tag_name=$(sed 's/",//')
+tag_name=$(sed 's/   //')
+#EXAMPLE: "browser_download_url": "https://github.com/casey/ord/releases/download/0.4.2/ord-0.4.2-x86_64-unknown-linux-gnu.tar.gz"
+#EXAMPLE: "browser_download_url": "https://github.com/casey/ord/releases/download/$tag_name/ord-$tag_name-$uname_target"
+
+archive="$releases/download/$tag_name/$crate-$tag_name-$target.tar.gz"
+echo "archive="$archive
+echo "archive="$archive
+echo "archive="$archive
+echo "archive="$archive
+echo "archive="$archive
 
 say_err "Repository:  $url"
 say_err "Crate:       $crate"
