@@ -82,6 +82,7 @@ done
 
 # Dependencies
 need curl
+need sed
 need install
 need mkdir
 need mktemp
