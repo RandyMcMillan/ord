@@ -99,10 +99,7 @@ if [ -z ${dest-} ]; then
 fi
 
 if [ -z ${tag-} ]; then
-  tag=$(curl --proto =https --tlsv1.2 -sSf https://api.github.com/repos/casey/ord/releases/latest |
-    grep tag_name |
-    cut -d'"' -f4
-  )
+  tag=$(curl --proto =https --tlsv1.2 -sSf https://api.github.com/repos/casey/ord/releases/latest | grep tag_name | cut -d'"' -f4)
 fi
 
 if [ -z ${target-} ]; then
