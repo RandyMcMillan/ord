@@ -83,6 +83,7 @@ done
 # Dependencies
 need curl
 need sed
+need jq
 need install
 need mkdir
 need mktemp
@@ -99,7 +100,17 @@ if [ -z ${dest-} ]; then
 fi
 
 if [ -z ${tag-} ]; then
-  tag=$(curl --proto =https --tlsv1.2 -sSf https://api.github.com/repos/casey/ord/releases/latest | grep tag_name | cut -d'"' -f4)
+
+  if command -v jq; then
+    tag=$(curl --proto =https --tlsv1.2 -sSf https://api.github.com/repos/casey/ord/releases/latest | \
+      jq . | grep 'tag_name' | sed 's/"tag_name": "/ /' | sed 's/",/ /' | sed 's/   //' | sed 's/ //')
+  else
+    tag=$(curl --proto =https --tlsv1.2 -sSf https://api.github.com/repos/casey/ord/releases/latest | grep tag_name | cut -d'"' -f4)
+  fi
+  #tag=$(curl --proto =https --tlsv1.2 -sSf https://api.github.com/repos/casey/ord/releases/latest | grep tag_name | cut -d'"' -f4)
+  #tag=$(curl --proto =https --tlsv1.2 -sSf https://api.github.com/repos/casey/ord/releases/latest | grep "tag_name" | sed 's/"tag_name": "/ /'  | sed 's/",//' | sed 's/   //')
+  #tag=$(curl --proto =https --tlsv1.2 -sSf https://api.github.com/repos/casey/ord/releases/latest | jq . | grep 'tag_name' | sed 's/"tag_name": "/ /' | sed 's/",/ /' | sed 's/   //' | sed 's/ //')
+  echo tag=$tag
 fi
 
 if [ -z ${target-} ]; then
